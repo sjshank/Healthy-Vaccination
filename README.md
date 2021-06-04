@@ -1,5 +1,5 @@
 # Healthy-Vaccination
-Web portal is designed to track a real time vaccination data of India provide by GOI CO-Win Public APIs. It also provides you ability to search &amp; forecast vaccination availability.
+Web portal is designed to track a real time vaccination data of India provide by GOI CO-Win Public APIs. It also provides you ability to search &amp; forecast vaccination availability. Site will redirect you to official [GOI CO-Win](https://selfregistration.cowin.gov.in/) website for Registration & Appointment Booking.
 
 ## Project Objectives
 The project has been built with a following learning objectives : 
