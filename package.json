@@ -1,7 +1,7 @@
 {
-  "name": "mycowinapp",
+  "name": "IN_Vaccination",
   "version": "1.0.0",
-  "description": "vaccination dashboard to display overall statistics",
+  "description": "Web portal to track a real time vaccination data of India provide by GOI CO-Win Public APIs. It also provides you ability to search &amp; forecast vaccination availability.",
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --open --config webpack.dev.js",
@@ -61,6 +61,7 @@
     "@typescript-eslint/parser": "^4.24.0",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "compression-webpack-plugin": "^8.0.0",
     "css-loader": "^5.2.5",
     "eslint": "^7.26.0",
     "eslint-plugin-react": "^7.23.2",
@@ -75,6 +76,7 @@
     "terser-webpack-plugin": "^5.1.2",
     "ts-loader": "^9.2.1",
     "ts-node": "^9.1.1",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0",
