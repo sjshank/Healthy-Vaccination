@@ -1,0 +1,42 @@
+.app {
+  margin-bottom: 20px;
+  min-height: 36rem;
+}
+
+header, footer {
+  padding: 0.50rem 0.25rem !important;
+}
+
+.fontWeight500 {
+  font-weight: 500;
+}
+.fontWeight700{
+  font-weight: 700;
+}
+.highcharts-credits {
+  display: none;
+}
+
+.cardShadowCls {
+  box-shadow: 2px 2px 20px rgb(0 0 0 / 30%);
+  border: 0px;
+  border-radius: 0px;
+}
+
+.relativePosition {
+  position: relative;
+}
+
+
+.modalLinkCls {
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.modalLinkCls:hover {
+  text-decoration: underline;
+}
+
+.modalLinkCls:focus {
+  text-decoration: underline;
+}

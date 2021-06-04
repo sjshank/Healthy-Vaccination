@@ -1,0 +1,35 @@
+.vaccineBadge {
+  padding       : 5px 8px !important;
+  font-size     : 10px !important;
+  border        : none;
+  font-weight   : 700;
+  margin        : 4px;
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: #fe9339 !important;
+    color           : #080707 !important;
+  }
+}
+
+.accordionBox {
+  &:hover {
+    .accordionBoxHeader {
+      .slds-float_left {
+        h5.centerTitle {
+          svg.customIcon {
+            color: #fff !important
+          }
+        }
+      }
+
+      span.vaccineBadge {
+        color     : #fff !important;
+        background: transparent !important;
+        border    : 2px solid #fff !important;
+        margin    : 4px;
+        padding   : 5px 6px !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+.slds-is-open .slds-accordion__summary-heading button.slds-accordion__summary-action {
+  cursor: pointer;
+  color: #014486 !important;
+  font-weight: 500;
+  text-decoration: underline;
+}

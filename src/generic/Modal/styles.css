@@ -1,0 +1,7 @@
+.showFooter footer.slds-modal__footer {
+  display: block;
+}
+
+.hideFooter footer.slds-modal__footer {
+  display: none;
+}

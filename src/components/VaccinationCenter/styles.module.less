@@ -1,0 +1,267 @@
+.accordionBox {
+  position                : relative;
+  display                 : -webkit-box;
+  display                 : -ms-flexbox;
+  display                 : flex;
+  -webkit-box-orient      : vertical;
+  -webkit-box-direction   : normal;
+  -ms-flex-direction      : column;
+  flex-direction          : column;
+  min-width               : 0;
+  word-wrap               : break-word;
+  background-color        : #fff;
+  background-clip         : border-box;
+  border-radius           : 0rem;
+  min-height              : 120px;
+  // box-shadow           : 2px 2px 20px rgb(0 0 0 / 20%);
+  box-shadow              : 0 20px 30px rgba(0, 0, 0, 0.11),
+    0 20px 40px rgba(220, 233, 255, 0.48);
+
+  .accordionBoxHeader {
+    position     : relative;
+    padding      : 0.50rem 1rem;
+    margin-bottom: 0;
+    clear        : both;
+    cursor       : pointer;
+
+    .headerDiv {
+      max-width: 90%;
+    }
+
+    .vaccineAvailabilityBadge,
+    .vaccineUnavailabilityBadge {
+      padding       : 1px 4px !important;
+      font-size     : 10px !important;
+      border        : none;
+      font-weight   : 700;
+      margin-left   : 5px;
+      text-transform: capitalize;
+      color         : #fff !important;
+
+      &:hover {
+        background-color: #2e844a !important;
+      }
+    }
+
+    .vaccineUnavailabilityBadge {
+      color: #fff !important;
+
+      &:hover {
+        background-color: #706e6b !important;
+      }
+    }
+
+    .expandIcon {
+      margin       : 0;
+      position     : relative;
+      top          : 50%;
+      -ms-transform: translateY(50%);
+      transform    : translateY(50%);
+    }
+  }
+
+  .vaccineBadge {
+    padding       : 5px 12px !important;
+    font-size     : 10px !important;
+    border        : none;
+    font-weight   : 700;
+    margin        : 4px;
+    text-transform: uppercase;
+
+    &:hover {
+      background-color: #fe9339 !important;
+      color           : #080707 !important;
+    }
+  }
+
+  .content {
+    display                : none;
+    color                  : #080807;
+    background             : #fff !important;
+    text-align             : center;
+    padding                : 0.50rem 1rem;
+    margin-bottom          : 0;
+    border-radius          : 0rem;
+    border-top-left-radius : 0px;
+    border-top-right-radius: 0px;
+  }
+
+  .centerTitle {
+    text-transform   : capitalize;
+    font-weight      : 500;
+    // max-width     : 275px;
+    overflow         : hidden;
+    text-overflow    : ellipsis;
+
+    .customIcon {
+      margin-top: 2px;
+    }
+
+    .subTitleLi {
+      margin-top : -2px;
+      margin-left: 1px;
+    }
+
+    .subTitle {
+      font-size  : 12px;
+      font-weight: 400;
+      white-space: normal;
+    }
+  }
+
+  &:hover {
+    // transform: translateY(-5px) scale(1.005) translateZ(0);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.11),
+      0 20px 40px rgba(220, 233, 255, 0.48);
+    // transition: transform 0.5s ease-in;
+    background: #fff;
+    background: linear-gradient(to bottom, #000046 0%, #010152bf 100%);
+    color     : #fff !important;
+
+    .accordionBoxHeader {
+      .slds-float_left {
+        .centerTitle {
+          .customIcon {
+            color: #fff !important
+          }
+        }
+      }
+
+    }
+
+    span.vaccineBadge {
+      color     : #fff !important;
+      background: transparent !important;
+      border    : 2px solid #fff !important;
+      margin    : 4px;
+      padding   : 5px 12px !important;
+    }
+
+    .content {
+
+      .address {
+        font-size : 13px;
+        text-align: left;
+      }
+
+      .slotBadge {
+        border-radius   : 0px;
+        background-color: #fff;
+        font-size       : 12px;
+        padding         : 5px;
+        background-clip : border-box;
+        box-shadow      : 2px 2px 10px rgb(0 0 0 / 20%);
+        text-align      : left;
+        margin          : 4px 4px 4px 0px;
+        border          : none;
+        color           : #2e844a;
+        font-family     : Consolas, Menlo, Monaco, Courier, monospace;
+      }
+    }
+
+  }
+}
+
+
+.isOpened {
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.11),
+    0 20px 40px rgba(220, 233, 255, 0.48);
+  // transition: transform 0.5s ease-in;
+  background: #fff;
+  background: linear-gradient(to bottom, #000046 0%, #010152bf 100%);
+  color     : #fff !important;
+
+  // -webkit-transition: all 0.5s ease-in-out;
+  // -moz-transition   : all 0.5s ease-in-out;
+  // -ms-transition    : all 0.5s ease-in-out;
+  // transition        : all 0.5s ease-in-out;
+
+  .accordionBoxHeader {
+    .slds-float_left {
+      h5.centerTitle {
+        svg.customIcon {
+          color: #fff !important
+        }
+      }
+    }
+  }
+
+  span.vaccineBadge {
+    color     : #fff !important;
+    background: transparent !important;
+    border    : 2px solid #fff !important;
+    margin    : 4px;
+    padding   : 5px 12px !important;
+  }
+
+  .content {
+
+    .address {
+      font-size : 13px;
+      text-align: left;
+    }
+
+    .slotBadge {
+      border-radius   : 0px;
+      background-color: #fff;
+      font-size       : 12px;
+      padding         : 5px;
+      background-clip : border-box;
+      box-shadow      : 2px 2px 10px rgb(0 0 0 / 20%);
+      text-align      : left;
+      margin          : 4px 4px 4px 0px;
+      border          : 1px solid #2e844a !important;
+      color           : #2e844a;
+      font-family     : Consolas, Menlo, Monaco, Courier, monospace;
+
+      &:hover {
+        background-color: #2e844a;
+        color           : #fff;
+      }
+    }
+
+    table {
+      tbody {
+        .weakRow {
+          opacity: 0.5;
+
+          td {
+            .appointmentClass {
+              .slotBadge {
+                background-color: #c9c7c5 !important;
+                pointer-events  : none !important;
+
+                &:hover {
+                  background-color: #c9c7c5 !important;
+                  color           : #2e844a !important;
+                }
+              }
+            }
+          }
+        }
+
+        .appointmentClass {
+          white-space: normal !important;
+        }
+
+        .tooltipCls {
+          max-width: 100rem !important;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .headerDiv {
+    max-width: 85% !important;
+  }
+
+  .accordionBox {
+    height: auto;
+
+    // .accordionBoxHeader {
+    //   margin-bottom: 35px;
+    // }
+  }
+}
