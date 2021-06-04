@@ -18,6 +18,12 @@ The project has been built with a following learning objectives :
 7. highcharts ^9.1
 8. salesforce-lightning-design-system.min.css ^2.15
 
+## Co-Win Public APIs
+1. https://api.cowin.gov.in/api/v1/reports/v2/
+2. https://cdn-api.co-vin.in/api/v2/auth/public/
+3. https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/
+4. https://cdn-api.co-vin.in/api/v2/registration/certificate/public/
+
 ## How to run application in local ?
 * git clone https://github.com/sjshank/Healthy-Vaccination.git
 * npm install
