@@ -29,3 +29,7 @@ The project has been built with a following learning objectives :
 * npm install
 * npm start
 * http://localhost:4000/
+
+- - - -
+
+#### Copyright @2021  [Saurabh Shankariya](https://sjshank.com "Named link title")
