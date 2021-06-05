@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaMinusCircle, FaPlusCircle } from "react-icons/all";
+import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 import BadgeComponent from "../../generic/Badge";
 import { ICenterType } from "../../models/center.interface";
 import styles from "./styles.module.less";

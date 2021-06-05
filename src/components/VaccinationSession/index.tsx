@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import _ from "lodash";
-import {
-  IoIosArrowDropup,
-  IoIosArrowDropdown,
-  RiHospitalFill,
-} from "react-icons/all";
-import BadgeComponent from "../../generic/Badge";
+import { IoIosArrowDropup, IoIosArrowDropdown } from "react-icons/io";
 import { ISessionType } from "../../models/session.interface";
 import styles from "./styles.module.less";
 import "./styles.css";
@@ -38,14 +33,16 @@ const VaccinationSessionComponent = ({ session }: SessionProps) => {
     >
       <div className={`${styles.accordionBoxHeader} accordionBoxHeader`}>
         <div className={`${styles.headerDiv} slds-float_left`}>
-        <AccordionBoxHeaderComponent record={session} iconColor={iconColor} />
+          <AccordionBoxHeaderComponent record={session} iconColor={iconColor} />
         </div>
         <div className="slds-float_right">
           {!isExpanded && <IoIosArrowDropup size="2em" color={iconColor} />}
           {isExpanded && <IoIosArrowDropdown size="2em" color={iconColor} />}
         </div>
         <div className="slds-clearfix slds-m-bottom_small"></div>
-        <div className={`slds-list_horizontal slds-m-around_xx-small slds-m-left_none ${styles.highlightSectionBar}`}>
+        <div
+          className={`slds-list_horizontal slds-m-around_xx-small slds-m-left_none ${styles.highlightSectionBar}`}
+        >
           <HighlightsComponent record={session} />
         </div>
       </div>

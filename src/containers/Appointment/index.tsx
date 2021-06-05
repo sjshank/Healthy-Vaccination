@@ -1,6 +1,6 @@
 import React from "react";
 import ScopedNotification from "@salesforce/design-system-react/components/scoped-notification";
-import { ImInfo } from "react-icons/all";
+import { ImInfo } from "react-icons/im";
 
 // import UserAuthenticateComponent from "../../components/UserAuthenticate";
 // import OTPConfirmComponent from "../../components/OTPConfirm";

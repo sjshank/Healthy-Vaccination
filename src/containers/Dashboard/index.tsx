@@ -3,13 +3,11 @@ import CardComponent from "../../components/Card";
 import VaccinationByAgeComponent from "../../components/VaccinationByAge";
 import VaccinationByCategoryComponent from "../../components/VaccinationByCategory";
 import VaccinationByStateComponent from "../../components/VaccinationByStates";
-import {
-  ImOffice,
-  TiGroup,
-  RiFirstAidKitFill,
-  FaBusinessTime,
-  BsFillInfoCircleFill,
-} from "react-icons/all";
+import { BsFillInfoCircleFill } from "react-icons/bs";
+import { FaBusinessTime } from "react-icons/fa";
+import { RiFirstAidKitFill } from "react-icons/ri";
+import { TiGroup } from "react-icons/ti";
+import { ImOffice } from "react-icons/im";
 import * as AppConstant from "../../constants/appConstant";
 import { DashboardType } from "../../models/dashboard.interface";
 import { DashboardAPI } from "../../services/dashboardAPI";
@@ -72,7 +70,6 @@ const DashBoardComponent = () => {
           subTitleOne_Value: data.topBlock.sessions.govt,
           subTitleTwo_Value: data.topBlock.sessions.pvt,
         });
-
       })
       .catch((err) => {
         isLoading.current = false;

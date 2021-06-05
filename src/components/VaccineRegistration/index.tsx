@@ -1,6 +1,5 @@
 import React from "react";
-import VaccinationHeaderComponent from "../VaccinationHeader";
-import { FaCashRegister } from "react-icons/all";
+import { FaCashRegister } from "react-icons/fa";
 import { IVaccinationRegistered } from "../../models/dashboard.interface";
 import AccordionComponent from "../../generic/Accordion";
 import RegistrationDetailViewComponent from "../RegistrationDetailView";

@@ -3,6 +3,7 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const zopfli = require("@gfx/zopfli");
 
 module.exports = merge(common, {
     mode: 'production',
@@ -19,14 +20,26 @@ module.exports = merge(common, {
         maxAssetSize: 512000
     },
     optimization: {
-        moduleIds: 'deterministic',
-        runtimeChunk: 'single',
         splitChunks: {
+            chunks: 'async',
+            minSize: 20000,
+            minRemainingSize: 0,
+            minChunks: 1,
+            maxAsyncRequests: 30,
+            maxInitialRequests: 30,
+            enforceSizeThreshold: 50000,
             cacheGroups: {
-                vendor: {
+                defaultVendors: {
                     test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    reuseExistingChunk: true,
                     name: 'vendors',
                     chunks: 'all',
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true,
                 },
             },
         },
@@ -46,10 +59,15 @@ module.exports = merge(common, {
     },
     plugins: [
         new CompressionPlugin({
+            compressionOptions: {
+                numiterations: 15,
+            },
+            algorithm(input, compressionOptions, callback) {
+                return zopfli.gzip(input, compressionOptions, callback);
+            },
             test: /\.js(\?.*)?$/i,
             minRatio: 0.8,
             threshold: 8192,
-            algorithm: "gzip",
             exclude: /.map$/
         }),
     ],

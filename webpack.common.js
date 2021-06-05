@@ -130,6 +130,6 @@ module.exports = {
 
     plugins: [
         new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({ inject: true, template: path.resolve(__dirname, 'src', 'index.html') })
+        new HtmlWebpackPlugin({ inject: true, template: path.resolve(__dirname, 'src', 'index.html') }),
     ]
 };

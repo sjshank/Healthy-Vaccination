@@ -1,6 +1,5 @@
 import React from "react";
-import VaccinationHeaderComponent from "../VaccinationHeader";
-import { GiDiscussion } from "react-icons/all";
+import { RiWechatFill } from "react-icons/ri";
 import { IVaccinationSession } from "../../models/dashboard.interface";
 import AccordionComponent from "../../generic/Accordion";
 import SessionDetailViewComponent from "../SessionDetailView/indes";
@@ -25,7 +24,7 @@ const VaccinationSessionOverviewComponent = (
 
   return (
     <CardLayout headerTitle="Recent Vaccination Sessions">
-      <GiDiscussion size="2em" />
+      <RiWechatFill size="2em" />
       <div style={{ overflow: "auto", maxHeight: "300px" }}>
         <AccordionComponent
           accordionId="vaccinationSession"

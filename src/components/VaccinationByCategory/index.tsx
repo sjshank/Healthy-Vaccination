@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
-import VaccinationHeaderComponent from "../VaccinationHeader";
-import { VscGroupByRefType } from "react-icons/all";
+import React from "react";
+import { VscGroupByRefType } from "react-icons/vsc";
 import ChartComponent from "../../generic/Chart";
 import { IVaccinationDose } from "../../models/dashboard.interface";
 import * as AppConstant from "../../constants/appConstant";

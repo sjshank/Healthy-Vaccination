@@ -1,8 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import BadgeComponent from "../../generic/Badge";
-import VaccinationHeaderComponent from "../VaccinationHeader";
-import { FaSearchLocation } from "react-icons/all";
+import { FaSearchLocation } from "react-icons/fa";
 import CardLayout from "../../HOC/CardLayout";
 
 const VaccinationAvailabilityComponent = (props: any) => {

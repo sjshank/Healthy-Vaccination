@@ -1,6 +1,5 @@
 import React from "react";
-import VaccinationHeaderComponent from "../VaccinationHeader";
-import { GiDuration } from "react-icons/all";
+import { MdTimeline } from "react-icons/md";
 import ChartComponent from "../../generic/Chart";
 import { IVaccinationAge } from "../../models/dashboard.interface";
 import * as AppConstant from "../../constants/appConstant";
@@ -18,7 +17,7 @@ const VaccinationByAgeComponent = ({ age }: AgeProps) => {
   );
   return (
     <CardLayout headerTitle="Vaccination By Age">
-      <GiDuration size="2em" />
+      <MdTimeline size="2em" />
       <ChartComponent
         type="pie"
         dataSource={ageDataSource}

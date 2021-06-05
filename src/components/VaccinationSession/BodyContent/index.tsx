@@ -1,6 +1,7 @@
 import React from "react";
 import _ from "lodash";
-import { MdEventAvailable, ImLocation2 } from "react-icons/all";
+import { MdEventAvailable } from "react-icons/md";
+import { ImLocation2 } from "react-icons/im";
 import { ISessionType } from "../../../models/session.interface";
 import styles from "./styles.module.less";
 import ButtonComponent from "../../../generic/Button";

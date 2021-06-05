@@ -1,5 +1,5 @@
 import React from "react";
-import { RiPinDistanceLine } from "react-icons/all";
+import { RiPinDistanceLine } from "react-icons/ri";
 import DataTableColumn from "@salesforce/design-system-react/components/data-table/column";
 import DatatableComponent from "../../generic/Datatable";
 import { IBeneficiary } from "../../models/dashboard.interface";
