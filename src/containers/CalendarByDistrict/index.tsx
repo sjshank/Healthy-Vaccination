@@ -18,6 +18,7 @@ import LoadMoreComponent from "../../components/LoadMore";
 import ScopedNotificationComponent from "../../generic/ScopedNotification";
 import { useFetchDistrictJson } from "../../utils/CustomHooks";
 import { useToasts } from "react-toast-notifications";
+import VaccinationCenterComponent from "../../components/VaccinationCenter";
 
 type StateObject = {
   label: string;
@@ -142,14 +143,13 @@ const CalendarByDistrictComponent = (props: any) => {
   };
 
   const renderCenters = () => {
-    const CenterComp = lazy(() => import("../../components/VaccinationCenter"));
     return vaccinationCenters.slice(0, limit).map((center) => {
       return (
         <div
           className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_10-of-12 slds-p-horizontal_x-small slds-p-vertical_medium"
           key={`${center.center_id}-${center.pincode}`}
         >
-          <CenterComp center={center} expandAll={isExpandAll} />
+          <VaccinationCenterComponent center={center} expandAll={isExpandAll} />
         </div>
       );
     });
