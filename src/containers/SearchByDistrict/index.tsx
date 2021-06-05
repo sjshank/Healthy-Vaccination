@@ -17,6 +17,7 @@ import LoadMoreComponent from "../../components/LoadMore";
 import ScopedNotificationComponent from "../../generic/ScopedNotification";
 import { useFetchDistrictJson } from "../../utils/CustomHooks";
 import { useToasts } from "react-toast-notifications";
+import VaccinationSessionComponent from "../../components/VaccinationSession";
 
 type StateObject = {
   label: string;
@@ -124,14 +125,13 @@ const SearchByDistrictComponent = (props: any) => {
   };
 
   const renderSessions = () => {
-    const SessionComp = lazy(() => import("../../components/VaccinationSession"));
     return vaccinationSessions.slice(0, limit).map((session) => {
       return (
         <div
           className="slds-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_5-of-12 slds-p-horizontal_x-small slds-p-vertical_medium"
           key={`session.center_id${session.session_id}`}
         >
-          <SessionComp session={session} />
+          <VaccinationSessionComponent session={session} />
         </div>
       );
     });
