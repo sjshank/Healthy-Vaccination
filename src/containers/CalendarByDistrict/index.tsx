@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, lazy } from "react";
+import React, { useEffect, useState, useRef, lazy, useContext } from "react";
 import styles from "./styles.module.less";
 import ButtonComponent from "../../generic/Button";
 import { useHistory } from "react-router-dom";
@@ -6,7 +6,10 @@ import Dropdown from "@salesforce/design-system-react/components/menu-dropdown";
 import DropdownTrigger from "@salesforce/design-system-react/components/menu-dropdown/button-trigger";
 import Button from "@salesforce/design-system-react/components/button/";
 import { SearchAPI } from "../../services/searchAPI";
-import { getTodayDateFormatted } from "../../utils/Helper";
+import {
+  getTodayDateFormatted,
+  populateFilteredRecords,
+} from "../../utils/Helper";
 import SpinnerComponent from "../../generic/Spinner";
 import _ from "lodash";
 import * as AppConstant from "../../constants/appConstant";
@@ -19,6 +22,8 @@ import ScopedNotificationComponent from "../../generic/ScopedNotification";
 import { useFetchDistrictJson } from "../../utils/CustomHooks";
 import { useToasts } from "react-toast-notifications";
 import VaccinationCenterComponent from "../../components/VaccinationCenter";
+import FilterComponent from "../Filter";
+import { VaccinationFilterContext } from "../../context/VaccinationFilter";
 
 type StateObject = {
   label: string;
@@ -37,6 +42,8 @@ type CSVObject = {
 };
 
 const CalendarByDistrictComponent = (props: any) => {
+  const filterContext = useContext(VaccinationFilterContext);
+  const { vaccinationFilterState, resetFilter } = filterContext;
   const { addToast } = useToasts();
   const [selectedDistrict, setSelectedDistrict] = useState<DistrictObject>();
   const disableFlagRef = useRef<boolean>(true);
@@ -47,9 +54,10 @@ const CalendarByDistrictComponent = (props: any) => {
   const [districtLabel, setDistrictLabel] = useState<string>("Select District");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [limit, setLimit] = useState<number>(1);
-  const [vaccinationCenters, setVaccinationCenters] = useState<ICenterType[]>(
-    []
-  );
+  const vaccinationCenters = useRef<ICenterType[]>([]);
+  const [filteredVaccinationCenters, setVaccinationCenters] = useState<
+    ICenterType[]
+  >([]);
   const [isExpandAll, setIsExpandAll] = useState<boolean>(false);
   const history = useHistory();
   const districtJSON = useFetchDistrictJson();
@@ -58,18 +66,39 @@ const CalendarByDistrictComponent = (props: any) => {
     document.getElementById("stateBtn")?.focus();
   }, []);
 
+  useEffect(() => {
+    setVaccinationCenters(
+      _.orderBy(
+        [
+          ...populateFilteredRecords(
+            vaccinationFilterState,
+            vaccinationCenters.current
+          ),
+        ],
+        ["isSessionAvailable"],
+        ["desc"]
+      )
+    );
+  }, [vaccinationFilterState]);
+
   const searchRecords = (selectedValue?: DistrictObject) => {
     setIsLoading(true);
     SearchAPI.searchRecordsCalendarByDistrict(
       `district_id=${selectedValue?.value}&date=${getTodayDateFormatted()}`
     )
       .then((data) => {
+        resetFilter();
         const _centers: ICenterType[] = data["centers"];
         _centers.forEach((center) => {
           center["isSessionAvailable"] = center.sessions.some(
             (item) => item["available_capacity"] !== 0
           );
         });
+        vaccinationCenters.current = _.orderBy(
+          [..._centers],
+          ["isSessionAvailable"],
+          ["desc"]
+        );
         setVaccinationCenters(
           _.orderBy([..._centers], ["isSessionAvailable"], ["desc"])
         );
@@ -89,6 +118,11 @@ const CalendarByDistrictComponent = (props: any) => {
     setLimit((prevLimit) => prevLimit + 10);
   };
 
+  const handleBackAction = () => {
+    resetFilter();
+    history.goBack();
+  };
+
   const resetAction = () => {
     setSelectedDistrict(undefined);
     disableFlagRef.current = true;
@@ -96,7 +130,9 @@ const CalendarByDistrictComponent = (props: any) => {
     setStateLabel("Select State");
     setDistrictList([]);
     setVaccinationCenters([]);
+    vaccinationCenters.current = [];
     setLimit(1);
+    resetFilter();
   };
 
   const handleStateSelect = (sValue: StateObject) => {
@@ -130,10 +166,33 @@ const CalendarByDistrictComponent = (props: any) => {
     }, 100);
   };
 
+  const renderFilters = () => {
+    return (
+      <>
+        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_4-of-12">
+          <FilterComponent
+            title="Filter by Vaccine"
+            type="vaccine"
+            badgeList={AppConstant.VACCINE_LIST_BADGE}
+          />
+        </div>
+        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_4-of-12">
+          <FilterComponent
+            title="Filter by Age"
+            type="age"
+            badgeList={AppConstant.AGE_LIST_BADGE}
+          />
+        </div>
+      </>
+    );
+  };
+
   const renderExpandCollapseBar = () => {
     return (
       <>
-        <TotalRecordsBarComponent numberOfRecords={vaccinationCenters.length} />
+        <TotalRecordsBarComponent
+          numberOfRecords={filteredVaccinationCenters.length}
+        />
         <ExpandCollapseBarComponent
           isExpandAll={isExpandAll}
           handleExpandCollapseAll={handleExpandCollapseAll}
@@ -143,7 +202,7 @@ const CalendarByDistrictComponent = (props: any) => {
   };
 
   const renderCenters = () => {
-    return vaccinationCenters.slice(0, limit).map((center) => {
+    return filteredVaccinationCenters.slice(0, limit).map((center) => {
       return (
         <div
           className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_10-of-12 slds-p-horizontal_x-small slds-p-vertical_medium"
@@ -156,13 +215,13 @@ const CalendarByDistrictComponent = (props: any) => {
   };
 
   const renderBackAndLoadMoreSection = () => {
-    if (vaccinationCenters.length > 10) {
+    if (filteredVaccinationCenters.length > 10) {
       return (
         <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12">
           <div className="slds-text-align_center">
-            <ButtonComponent label="Back" clickEvent={() => history.goBack()} />
+            <ButtonComponent label="Back" clickEvent={handleBackAction}  />
             <LoadMoreComponent
-              records={vaccinationCenters}
+              records={filteredVaccinationCenters}
               limit={limit}
               handleLoadMore={handleLoadMore}
             />
@@ -180,7 +239,7 @@ const CalendarByDistrictComponent = (props: any) => {
         className="slds-grid slds-wrap slds-m-around_large"
         style={{ justifyContent: "center" }}
       >
-        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12">
+        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_8-of-12">
           <div className="districtDropdwonSection">
             <label className="slds-form-element__label searchByDistrictLbl">
               <abbr className="slds-required" title="required">
@@ -210,7 +269,7 @@ const CalendarByDistrictComponent = (props: any) => {
             </Dropdown>
           </div>
           <div className="slds-m-top_medium slds-m-bottom_medium slds-text-align_center">
-            <ButtonComponent label="Back" clickEvent={() => history.goBack()} />
+            <ButtonComponent label="Back" clickEvent={handleBackAction} />
             <ButtonComponent label="Reset" clickEvent={resetAction} />
             <ButtonComponent
               label="Search"
@@ -234,7 +293,8 @@ const CalendarByDistrictComponent = (props: any) => {
             />
           </div>
         )}
-        {vaccinationCenters.length > 0 && (
+        {renderFilters()}
+        {filteredVaccinationCenters.length > 0 && (
           <>
             {renderExpandCollapseBar()}
             {renderCenters()}
@@ -242,7 +302,10 @@ const CalendarByDistrictComponent = (props: any) => {
           </>
         )}
         {limit === 0 && (
-          <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12" id="errorBox">
+          <div
+            className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12 slds-m-around_medium"
+            id="errorBox"
+          >
             <ScopedNotificationComponent
               text={`No vaccination center is available.`}
             />

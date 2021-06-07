@@ -76,6 +76,21 @@
   opacity: 0.7;
 }
 
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .content {
+    .slds-m-around_small {
+      .slds-table_header-fixed_container {
+        overflow: auto !important;
+
+        table.slds-table {
+          table-layout: auto !important;
+        }
+      }
+    }
+  }
+}
+
 @-webkit-keyframes fadeIn {
   from {
     opacity: 0;

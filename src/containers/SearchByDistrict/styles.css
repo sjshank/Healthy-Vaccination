@@ -31,3 +31,12 @@
   font-weight: 500;
   font-size: 14px;
 }
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .districtDropdwonSection .slds-dropdown-trigger {
+    width        : 100%;
+    margin-bottom: 8px;
+    margin-right: 0;
+    margin-left: 0;
+  }
+}

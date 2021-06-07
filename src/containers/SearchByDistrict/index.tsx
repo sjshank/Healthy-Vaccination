@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, lazy } from "react";
+import React, { useEffect, useState, useRef, lazy, useContext } from "react";
 import styles from "./styles.module.less";
 import ButtonComponent from "../../generic/Button";
 import { useHistory } from "react-router-dom";
@@ -6,7 +6,10 @@ import Dropdown from "@salesforce/design-system-react/components/menu-dropdown";
 import DropdownTrigger from "@salesforce/design-system-react/components/menu-dropdown/button-trigger";
 import Button from "@salesforce/design-system-react/components/button/";
 import { SearchAPI } from "../../services/searchAPI";
-import { getTodayDateFormatted } from "../../utils/Helper";
+import {
+  getTodayDateFormatted,
+  populateFilteredRecords,
+} from "../../utils/Helper";
 import SpinnerComponent from "../../generic/Spinner";
 import { ISessionType } from "../../models/session.interface";
 import _ from "lodash";
@@ -18,6 +21,9 @@ import ScopedNotificationComponent from "../../generic/ScopedNotification";
 import { useFetchDistrictJson } from "../../utils/CustomHooks";
 import { useToasts } from "react-toast-notifications";
 import VaccinationSessionComponent from "../../components/VaccinationSession";
+import FilterComponent from "../Filter";
+import { VaccinationFilterContext } from "../../context/VaccinationFilter";
+import BaseNotificationComponent from "../../generic/BaseNotification";
 
 type StateObject = {
   label: string;
@@ -37,6 +43,8 @@ type CSVObject = {
 
 const SearchByDistrictComponent = (props: any) => {
   const { addToast } = useToasts();
+  const filterContext = useContext(VaccinationFilterContext);
+  const { vaccinationFilterState, resetFilter } = filterContext;
   const [selectedDistrict, setSelectedDistrict] = useState<DistrictObject>();
   const disableFlagRef = useRef<boolean>(true);
   const [districtList, setDistrictList] = useState<Array<DistrictObject | any>>(
@@ -46,7 +54,8 @@ const SearchByDistrictComponent = (props: any) => {
   const [districtLabel, setDistrictLabel] = useState<string>("Select District");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [limit, setLimit] = useState<number>(1);
-  const [vaccinationSessions, setVaccinationSessions] = useState<
+  const vaccinationSessions = useRef<ISessionType[]>([]);
+  const [filteredVaccinationSessions, setVaccinationSessions] = useState<
     ISessionType[]
   >([]);
   const history = useHistory();
@@ -55,6 +64,21 @@ const SearchByDistrictComponent = (props: any) => {
     disableFlagRef.current = true;
     document.getElementById("stateBtn")?.focus();
   }, []);
+
+  useEffect(() => {
+    setVaccinationSessions(
+      _.orderBy(
+        [
+          ...populateFilteredRecords(
+            vaccinationFilterState,
+            vaccinationSessions.current
+          ),
+        ],
+        ["isSessionAvailable"],
+        ["desc"]
+      )
+    );
+  }, [vaccinationFilterState]);
 
   const searchRecords = (selectedValue?: DistrictObject) => {
     setIsLoading(true);
@@ -66,6 +90,11 @@ const SearchByDistrictComponent = (props: any) => {
         _sessions.forEach((session) => {
           session["isSessionAvailable"] = session["available_capacity"] !== 0;
         });
+        vaccinationSessions.current = _.orderBy(
+          [..._sessions],
+          ["isSessionAvailable"],
+          ["desc"]
+        );
         setVaccinationSessions(
           _.orderBy([..._sessions], ["isSessionAvailable"], ["desc"])
         );
@@ -92,7 +121,14 @@ const SearchByDistrictComponent = (props: any) => {
     setStateLabel("Select State");
     setDistrictList([]);
     setVaccinationSessions([]);
+    vaccinationSessions.current = [];
     setLimit(1);
+    resetFilter();
+  };
+
+  const handleBackAction = () => {
+    resetFilter();
+    history.goBack();
   };
 
   const handleStateSelect = (sValue: StateObject) => {
@@ -118,14 +154,37 @@ const SearchByDistrictComponent = (props: any) => {
     disableFlagRef.current = sValue.label ? false : true;
   };
 
+  const renderFilters = () => {
+    return (
+      <>
+        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12">
+          <FilterComponent
+            title="Filter by Vaccine"
+            type="vaccine"
+            badgeList={AppConstant.VACCINE_LIST_BADGE}
+          />
+        </div>
+        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12 ">
+          <FilterComponent
+            title="Filter by Age"
+            type="age"
+            badgeList={AppConstant.AGE_LIST_BADGE}
+          />
+        </div>
+      </>
+    );
+  };
+
   const renderRecordsBar = () => {
     return (
-      <TotalRecordsBarComponent numberOfRecords={vaccinationSessions.length} />
+      <TotalRecordsBarComponent
+        numberOfRecords={filteredVaccinationSessions.length}
+      />
     );
   };
 
   const renderSessions = () => {
-    return vaccinationSessions.slice(0, limit).map((session) => {
+    return filteredVaccinationSessions.slice(0, limit).map((session) => {
       return (
         <div
           className="slds-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_5-of-12 slds-p-horizontal_x-small slds-p-vertical_medium"
@@ -138,13 +197,13 @@ const SearchByDistrictComponent = (props: any) => {
   };
 
   const renderBackAndLoadMoreSection = () => {
-    if (vaccinationSessions.length > 10) {
+    if (filteredVaccinationSessions.length > 10) {
       return (
         <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12">
           <div className="slds-text-align_center">
-            <ButtonComponent label="Back" clickEvent={() => history.goBack()} />
+            <ButtonComponent label="Back" clickEvent={handleBackAction} />
             <LoadMoreComponent
-              records={vaccinationSessions}
+              records={filteredVaccinationSessions}
               limit={limit}
               handleLoadMore={handleLoadMore}
             />
@@ -159,10 +218,10 @@ const SearchByDistrictComponent = (props: any) => {
   return (
     <React.Fragment>
       <div
-        className="slds-grid slds-wrap slds-m-around_large"
+        className="slds-grid slds-wrap slds-m-around_medium"
         style={{ justifyContent: "center" }}
       >
-        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12">
+        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_8-of-12">
           <div className="districtDropdwonSection">
             <label className="slds-form-element__label searchByDistrictLbl">
               <abbr className="slds-required" title="required">
@@ -192,7 +251,7 @@ const SearchByDistrictComponent = (props: any) => {
             </Dropdown>
           </div>
           <div className="slds-m-top_medium slds-m-bottom_medium slds-text-align_center">
-            <ButtonComponent label="Back" clickEvent={() => history.goBack()} />
+            <ButtonComponent label="Back" clickEvent={handleBackAction} />
             <ButtonComponent label="Reset" clickEvent={resetAction} />
             <ButtonComponent
               label="Search"
@@ -204,7 +263,7 @@ const SearchByDistrictComponent = (props: any) => {
         </div>
       </div>
       <div
-        className="slds-grid slds-wrap slds-m-around_large"
+        className="slds-grid slds-wrap slds-m-around_medium"
         style={{ justifyContent: "center" }}
       >
         {isLoading && (
@@ -216,7 +275,8 @@ const SearchByDistrictComponent = (props: any) => {
             />
           </div>
         )}
-        {vaccinationSessions.length > 0 && (
+        {renderFilters()}
+        {filteredVaccinationSessions.length > 0 && (
           <>
             {renderRecordsBar()}
             {renderSessions()}
@@ -224,9 +284,12 @@ const SearchByDistrictComponent = (props: any) => {
           </>
         )}
         {limit === 0 && (
-          <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12" id="errorBox">
+          <div
+            className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12 slds-m-around_medium"
+            id="errorBox"
+          >
             <ScopedNotificationComponent
-              text={`No vaccination session is available.`}
+              text={`No vaccination center is available.`}
             />
           </div>
         )}

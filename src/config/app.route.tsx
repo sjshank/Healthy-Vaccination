@@ -1,6 +1,7 @@
 import { Route, Switch } from "react-router-dom";
 import React, { Suspense, lazy } from "react";
 import DashBoardComponent from "../containers/Dashboard";
+import { VaccinationFilterContextProvider } from "../context/VaccinationFilter";
 
 const CalendarByPinComponent = lazy(
   () => import("../containers/CalendarByPin")
@@ -24,18 +25,30 @@ const Routes = () => {
         }
       >
         <Route path="/" exact component={DashBoardComponent} />
-        <Route path="/searchByPin" exact component={SearchByPinComponent} />
-        <Route
-          path="/searchByDistrict"
-          exact
-          component={SearchByDistrictComponent}
-        />
-        <Route path="/calendarByPin" exact component={CalendarByPinComponent} />
-        <Route
-          path="/calendarByDistrict"
-          exact
-          component={CalendarByDistrictComponent}
-        />
+        <VaccinationFilterContextProvider>
+          <Route path="/searchByPin" exact component={SearchByPinComponent} />
+        {/* </VaccinationFilterContextProvider>
+        <VaccinationFilterContextProvider> */}
+          <Route
+            path="/searchByDistrict"
+            exact
+            component={SearchByDistrictComponent}
+          />
+        {/* </VaccinationFilterContextProvider>
+        <VaccinationFilterContextProvider> */}
+          <Route
+            path="/calendarByPin"
+            exact
+            component={CalendarByPinComponent}
+          />
+        {/* </VaccinationFilterContextProvider>
+        <VaccinationFilterContextProvider> */}
+          <Route
+            path="/calendarByDistrict"
+            exact
+            component={CalendarByDistrictComponent}
+          />
+        </VaccinationFilterContextProvider>
       </Suspense>
     </Switch>
   );
