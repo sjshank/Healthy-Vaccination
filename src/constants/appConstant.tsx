@@ -125,3 +125,29 @@ export const STATE_LIST: Array<{ label: string; value: number }> = [
   { label: "West Bengal", value: 36 },
   { label: "Daman and Diu", value: 37 },
 ];
+
+export const VACCINE_LIST_BADGE: Array<{ content: string; id: string }> = [
+  {
+    content: "COVISHIELD",
+    id: "covishield",
+  },
+  {
+    content: "COVAXIN",
+    id: "covaxin",
+  },
+  // {
+  //   content: "SPUTNIK V",
+  //   id: "sputnik v",
+  // },
+];
+
+export const AGE_LIST_BADGE: Array<{ content: string; id: string }> = [
+  {
+    content: "Age 18+",
+    id: "18",
+  },
+  {
+    content: "Age 45+",
+    id: "45",
+  },
+];

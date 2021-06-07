@@ -6,6 +6,7 @@ import styles from "./styles.module.less";
 import _ from "lodash";
 import CenterBodyContent from "./BodyContent";
 import AccordionBoxHeaderComponent from "../AccordionBoxHeader";
+import { populateAgeCriteria, populateVaccineNames } from "../../utils/Helper";
 
 type CenterProps = {
   center: ICenterType;
@@ -13,13 +14,13 @@ type CenterProps = {
 };
 
 const Badges = (center: ICenterType) => {
-  const populateVaccineNames = (center: ICenterType) => {
-    return [...new Set(center.sessions?.map((item) => item["vaccine"]))];
-  };
+  // const populateVaccineNames = (center: ICenterType) => {
+  //   return [...new Set(center.sessions?.map((item) => item["vaccine"]))];
+  // };
 
-  const populateAgeCriteria = (center: ICenterType) => {
-    return [...new Set(center.sessions?.map((item) => item["min_age_limit"]?.toString()?.concat("+")))];
-  };
+  // const populateAgeCriteria = (center: ICenterType) => {
+  //   return [...new Set(center.sessions?.map((item) => item["min_age_limit"]?.toString()?.concat("+")))];
+  // };
 
   const _vaccines = populateVaccineNames(center);
   const _minAgeList = populateAgeCriteria(center);

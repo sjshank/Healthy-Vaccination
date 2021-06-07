@@ -1,5 +1,8 @@
 import { IBeneficiary } from "../models/dashboard.interface";
 import _ from "lodash";
+import { ISelectedFilter } from "../context/VaccinationFilter/state.d";
+import { ISessionType } from "../models/session.interface";
+import { ICenterType } from "../models/center.interface";
 
 export const getDataSourceAndLengendsMapped = (
   dataObject: any,
@@ -38,6 +41,26 @@ export const populateStateList = (data: IBeneficiary[]) => {
   });
 };
 
+export const populateVaccineNames = (center: ICenterType) => {
+  return [
+    ...new Set(center.sessions?.map((item) => item["vaccine"].toLowerCase())),
+  ];
+};
+
+export const populateAgeCriteria = (center: ICenterType) => {
+  return [
+    ...new Set(
+      center.sessions?.map((item) =>
+        item["min_age_limit"]?.toString()?.concat("+")
+      )
+    ),
+  ];
+};
+
+export const populateAge = (center: ICenterType) => {
+  return [...new Set(center.sessions?.map((item) => item["min_age_limit"]))];
+};
+
 export const toShortFormat = (unFormattedDate: any) => {
   const monthNames = [
     "Jan",
@@ -62,4 +85,57 @@ export const toShortFormat = (unFormattedDate: any) => {
   const year = d.getFullYear();
 
   return `${day} ${monthName.toUpperCase()} ${year}`;
+};
+
+type InitialStateType = {
+  selectedFilters: ISelectedFilter[];
+};
+
+export const populateFilteredRecords = (
+  filterState: InitialStateType,
+  records: ISessionType[] | ICenterType[]
+) => {
+  const _selectedFilters = [...filterState.selectedFilters];
+  const _vaccineFilterSet = new Set<string>();
+  const _ageFilterSet = new Set<number>();
+  _selectedFilters?.forEach((f: ISelectedFilter) => {
+    if (f?.type === "vaccine") {
+      _vaccineFilterSet.add(f?.value);
+    } else if (f?.type === "age") {
+      _ageFilterSet.add(parseInt(f?.value));
+    }
+  });
+  const _vaccineBasedFilterRecords =
+    [..._vaccineFilterSet]?.length > 0
+      ? _.filter([...records], function (o: any) {
+          if (o.vaccine) {
+            return (
+              [..._vaccineFilterSet]?.indexOf(o.vaccine?.toLowerCase()) > -1
+            );
+          }
+          if (Array.isArray(o.sessions)) {
+            const _vaccines = populateVaccineNames(o);
+            return _.isEqual(
+              _.intersection([..._vaccineFilterSet], _vaccines),
+              _vaccines
+            );
+          }
+        })
+      : [...records];
+  const _ageLimitBasedFilterRecords =
+    [..._ageFilterSet]?.length > 0
+      ? _.filter(_vaccineBasedFilterRecords, function (o: any) {
+          if (o.vaccine) {
+            return [..._ageFilterSet]?.indexOf(o.min_age_limit) > -1;
+          }
+          if (Array.isArray(o.sessions)) {
+            const _ageList = populateAge(o);
+            return _.isEqual(
+              _.intersection([..._ageFilterSet], _ageList),
+              _ageList
+            );
+          }
+        })
+      : [..._vaccineBasedFilterRecords];
+  return [..._ageLimitBasedFilterRecords];
 };

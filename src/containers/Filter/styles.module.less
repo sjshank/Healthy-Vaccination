@@ -1,0 +1,52 @@
+.filterBadgeCls {
+  filter       : grayscale(1) drop-shadow(0 0 1px #988e7e87);
+  transition   : .15s;
+  border-radius: 5px;
+
+  &:hover {
+    border            : 2px solid #0176d3;
+    background-color  : #fff;
+    outline           : none;
+    filter            : grayscale(0) drop-shadow(0 0 1px #0176d3);
+    -webkit-box-shadow: 0 10px 10px -10px #000000;
+    -moz-box-shadow   : 0 10px 10px -10px #000000;
+    box-shadow        : 0 10px 10px -10px #000000;
+  }
+}
+
+.filterBadgeSelected {
+  background-color  : #fff;
+  border-radius     : 5px;
+  font-weight       : 700;
+  border            : 2px solid #0176d3;
+  color             : #0176d3;
+  -webkit-box-shadow: 0 10px 10px -10px #000000;
+  -moz-box-shadow   : 0 10px 10px -10px #000000;
+  box-shadow        : 0 10px 10px -10px #000000;
+
+  &:hover {
+    border            : 2px solid #0176d3;
+    background-color  : #fff;
+    outline           : none;
+    filter            : grayscale(0) drop-shadow(0 0 1px #0176d3);
+    -webkit-box-shadow: 0 10px 10px -10px #000000;
+    -moz-box-shadow   : 0 10px 10px -10px #000000;
+    box-shadow        : 0 10px 10px -10px #000000;
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 1024px) {
+  .filterSection {
+    display   : block;
+    text-align: center;
+    margin-bottom: 8px;
+
+    h4 {
+      margin-bottom: 4px;
+    }
+
+    ul {
+      justify-content: center;
+    }
+  }
+}
