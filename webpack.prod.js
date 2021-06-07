@@ -50,6 +50,9 @@ module.exports = merge(common, {
                 parallel: true,
                 sourceMap: true,
                 uglifyOptions: {
+                    output: {
+                        comments: false,
+                    },
                     compress: {
                         inline: false
                     }
