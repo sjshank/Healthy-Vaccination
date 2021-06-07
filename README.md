@@ -30,6 +30,13 @@ The project has been built with a following learning objectives :
 * npm start
 * http://localhost:4000/
 
+
+## Useful Resources
+* React https://reactjs.org/
+* Typescript https://www.typescriptlang.org/
+* Lightning Design System for React https://react.lightningdesignsystem.com/
+* Co-Win Public API https://apisetu.gov.in/public/api/cowin
+
 - - - -
 
 #### Copyright @2021  [Saurabh Shankariya](https://sjshank.com "Named link title")
