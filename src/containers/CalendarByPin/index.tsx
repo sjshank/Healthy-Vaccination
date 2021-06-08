@@ -20,6 +20,8 @@ import { useToasts } from "react-toast-notifications";
 import VaccinationCenterComponent from "../../components/VaccinationCenter";
 import FilterComponent from "../Filter";
 import { VaccinationFilterContext } from "../../context/VaccinationFilter";
+import NavigateComponent from "../../components/Navigation";
+import { usePageLoadAction } from "../../utils/CustomHooks";
 
 const CalendarByPinComponent = (props: any) => {
   const filterContext = useContext(VaccinationFilterContext);
@@ -35,14 +37,9 @@ const CalendarByPinComponent = (props: any) => {
   const [filteredVaccinationCenters, setVaccinationCenters] = useState<
     ICenterType[]
   >([]);
+  usePageLoadAction(disableFlagRef, resetFilter, "pincodeInput");
 
   useEffect(() => {
-    disableFlagRef.current = true;
-    document.getElementById("pincodeInput")?.focus();
-  }, []);
-
-  useEffect(() => {
-    console.log(populateFilteredRecords(vaccinationFilterState, vaccinationCenters.current));
     setVaccinationCenters(
       _.orderBy(
         [
@@ -120,7 +117,7 @@ const CalendarByPinComponent = (props: any) => {
 
   const handleBackAction = () => {
     resetFilter();
-    history.goBack();
+    history.push("/");
   };
 
   const handleLoadMore = () => {
@@ -143,6 +140,7 @@ const CalendarByPinComponent = (props: any) => {
             title="Filter by Vaccine"
             type="vaccine"
             badgeList={AppConstant.VACCINE_LIST_BADGE}
+            customClass="slds-float_right"
           />
         </div>
         <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12">
@@ -150,6 +148,7 @@ const CalendarByPinComponent = (props: any) => {
             title="Filter by Age"
             type="age"
             badgeList={AppConstant.AGE_LIST_BADGE}
+            customClass="slds-float_left"
           />
         </div>
       </>
@@ -188,7 +187,7 @@ const CalendarByPinComponent = (props: any) => {
       return (
         <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12">
           <div className="slds-text-align_center">
-            <ButtonComponent label="Back" clickEvent={handleBackAction}  />
+            {/* <ButtonComponent label="Home" clickEvent={handleBackAction} /> */}
             <LoadMoreComponent
               records={filteredVaccinationCenters}
               limit={limit}
@@ -208,6 +207,20 @@ const CalendarByPinComponent = (props: any) => {
         className="slds-grid slds-wrap slds-m-around_large"
         style={{ justifyContent: "center" }}
       >
+        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12 slds-clearfix slds-p-bottom_xx-small">
+          <NavigateComponent
+            label="Back"
+            variant="link"
+            customClass="slds-float_left"
+            url=""
+          />
+          <NavigateComponent
+            label="Search Next 7 Days By District"
+            variant="link"
+            customClass="slds-float_right"
+            url="calendarByDistrict"
+          />
+        </div>
         <div className="slds-size_12-of-12 slds-medium-size_5-of-12 slds-large-size_5-of-12">
           <div className="slds-form-element__control">
             <Input
@@ -227,7 +240,7 @@ const CalendarByPinComponent = (props: any) => {
             />
           </div>
           <div className="slds-m-top_medium slds-m-bottom_medium slds-text-align_center">
-            <ButtonComponent label="Back" clickEvent={handleBackAction} />
+            <ButtonComponent label="Home" clickEvent={handleBackAction} />
             <ButtonComponent label="Reset" clickEvent={resetAction} />
             <ButtonComponent
               buttonId="calendarByPinBtn"

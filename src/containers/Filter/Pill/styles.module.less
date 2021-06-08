@@ -2,6 +2,7 @@
   filter       : grayscale(1) drop-shadow(0 0 1px #c9c7c5);
   transition   : .15s;
   border-radius: 5px;
+  padding      : 6px 18px;
 
   &:hover {
     border            : 2px solid #0176d3;
@@ -20,6 +21,7 @@
   font-weight       : 700;
   border            : 2px solid #0176d3;
   color             : #0176d3;
+  padding           : 6px 18px;
   -webkit-box-shadow: 0 10px 10px -10px #000000;
   -moz-box-shadow   : 0 10px 10px -10px #000000;
   box-shadow        : 0 10px 10px -10px #000000;
@@ -33,4 +35,20 @@
     -moz-box-shadow   : 0 10px 10px -10px #000000;
     box-shadow        : 0 10px 10px -10px #000000;
   }
+
+  // &::after {
+  //   content          : "";
+  //   background-color : transparent;
+  //   position         : relative;
+  //   left             : -107%;
+  //   top              : -1px;
+  //   width            : 6px;
+  //   border-bottom    : 3px solid #0176d3;
+  //   height           : 12px;
+  //   border-right     : 3px solid #0176d3;
+  //   transform        : rotate(45deg);
+  //   -o-transform     : rotate(45deg);
+  //   -ms-transform    : rotate(45deg);
+  //   -webkit-transform: rotate(46deg);
+  // }
 }

@@ -37,6 +37,7 @@ const DashBoardComponent = () => {
   });
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     DashboardAPI.getDashBoardData()
       .then((data) => {
         isLoading.current = false;
@@ -114,8 +115,9 @@ const DashBoardComponent = () => {
             <div className="slds-col slds-size_12-of-12 slds-p-horizontal_x-small slds-p-vertical_small slds-text-align_center">
               <BsFillInfoCircleFill size="1em" />
               <small className="slds-m-left_xx-small">
-                Co-WIN Public APIs are available for use by all third party
-                applications & data availability may be upto 30 minutes old.
+                Co-WIN Public APIs allow any third-party application to access
+                certain un-restricted information, that can be shared with its
+                users. This is limited only to read access in Co-WIN.
               </small>
             </div>
             <div
@@ -172,7 +174,7 @@ const DashBoardComponent = () => {
               <VaccinationAvailabilityComponent />
             </div>
           </div>
-          {disclaimerContent()}
+          {/* {disclaimerContent()} */}
         </div>
       )}
     </>

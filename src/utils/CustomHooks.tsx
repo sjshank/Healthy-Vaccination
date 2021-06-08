@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ISelectedFilter } from "../context/VaccinationCenter/state.d";
+import { ISelectedFilter } from "../context/VaccinationFilter/state.d";
 import CSVJson from "../data/csvjson.json";
 import { ISessionType } from "../models/session.interface";
 import _ from "lodash";
@@ -22,6 +22,19 @@ export const useFetchDistrictJson = () => {
   }, []);
 
   return [...jsonData];
+};
+
+export const usePageLoadAction = (
+  eleRef: React.MutableRefObject<boolean>,
+  fName: Function,
+  elementId: string
+) => {
+  useEffect(() => {
+    fName();
+    window.scrollTo(0, 0);
+    eleRef.current = true;
+    document.getElementById(elementId)?.focus();
+  }, []);
 };
 
 export const useFilterRecords = (

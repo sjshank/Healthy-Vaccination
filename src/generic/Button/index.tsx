@@ -22,6 +22,7 @@ const ButtonComponent = ({
   customClass,
   buttonId,
 }: ButtonProps) => {
+  const btnCls = variant !== "link" ? styles.buttonClass : "";
   return (
     <Button
       id={buttonId}
@@ -29,7 +30,7 @@ const ButtonComponent = ({
       variant={variant}
       disabled={disable}
       responsive
-      className={`${styles.buttonClass} ${customClass}`}
+      className={`${btnCls} ${customClass}`}
       onClick={clickEvent}
     />
   );

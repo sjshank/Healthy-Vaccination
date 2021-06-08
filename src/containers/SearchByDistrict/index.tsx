@@ -18,12 +18,16 @@ import "./styles.css";
 import TotalRecordsBarComponent from "../../components/TotalRecordsBar";
 import LoadMoreComponent from "../../components/LoadMore";
 import ScopedNotificationComponent from "../../generic/ScopedNotification";
-import { useFetchDistrictJson } from "../../utils/CustomHooks";
+import {
+  useFetchDistrictJson,
+  usePageLoadAction,
+} from "../../utils/CustomHooks";
 import { useToasts } from "react-toast-notifications";
 import VaccinationSessionComponent from "../../components/VaccinationSession";
 import FilterComponent from "../Filter";
 import { VaccinationFilterContext } from "../../context/VaccinationFilter";
 import BaseNotificationComponent from "../../generic/BaseNotification";
+import NavigateComponent from "../../components/Navigation";
 
 type StateObject = {
   label: string;
@@ -60,10 +64,7 @@ const SearchByDistrictComponent = (props: any) => {
   >([]);
   const history = useHistory();
   const districtJSON = useFetchDistrictJson();
-  useEffect(() => {
-    disableFlagRef.current = true;
-    document.getElementById("stateBtn")?.focus();
-  }, []);
+  usePageLoadAction(disableFlagRef, resetFilter, "stateBtn");
 
   useEffect(() => {
     setVaccinationSessions(
@@ -128,7 +129,7 @@ const SearchByDistrictComponent = (props: any) => {
 
   const handleBackAction = () => {
     resetFilter();
-    history.goBack();
+    history.push("/");
   };
 
   const handleStateSelect = (sValue: StateObject) => {
@@ -162,13 +163,15 @@ const SearchByDistrictComponent = (props: any) => {
             title="Filter by Vaccine"
             type="vaccine"
             badgeList={AppConstant.VACCINE_LIST_BADGE}
+            customClass="slds-float_right"
           />
         </div>
-        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12 ">
+        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12">
           <FilterComponent
             title="Filter by Age"
             type="age"
             badgeList={AppConstant.AGE_LIST_BADGE}
+            customClass="slds-float_left"
           />
         </div>
       </>
@@ -201,7 +204,7 @@ const SearchByDistrictComponent = (props: any) => {
       return (
         <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12">
           <div className="slds-text-align_center">
-            <ButtonComponent label="Back" clickEvent={handleBackAction} />
+            {/* <ButtonComponent label="Home" clickEvent={handleBackAction} /> */}
             <LoadMoreComponent
               records={filteredVaccinationSessions}
               limit={limit}
@@ -221,6 +224,20 @@ const SearchByDistrictComponent = (props: any) => {
         className="slds-grid slds-wrap slds-m-around_medium"
         style={{ justifyContent: "center" }}
       >
+        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12 slds-clearfix slds-p-bottom_xx-small">
+          <NavigateComponent
+            label="Back"
+            variant="link"
+            customClass="slds-float_left"
+            url=""
+          />
+          <NavigateComponent
+            label="Search Next 7 Days By Pin"
+            variant="link"
+            customClass="slds-float_right"
+            url="calendarByPin"
+          />
+        </div>
         <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_8-of-12">
           <div className="districtDropdwonSection">
             <label className="slds-form-element__label searchByDistrictLbl">
@@ -251,7 +268,7 @@ const SearchByDistrictComponent = (props: any) => {
             </Dropdown>
           </div>
           <div className="slds-m-top_medium slds-m-bottom_medium slds-text-align_center">
-            <ButtonComponent label="Back" clickEvent={handleBackAction} />
+            <ButtonComponent label="Home" clickEvent={handleBackAction} />
             <ButtonComponent label="Reset" clickEvent={resetAction} />
             <ButtonComponent
               label="Search"
