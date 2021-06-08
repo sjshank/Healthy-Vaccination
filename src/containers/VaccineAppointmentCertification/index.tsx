@@ -1,4 +1,5 @@
 import React, { useState, lazy, useRef, Suspense } from "react";
+import ReactGA from "react-ga";
 import ButtonComponent from "../../generic/Button";
 import ModalComponent from "../../generic/Modal";
 import SpinnerComponent from "../../generic/Spinner";
@@ -17,6 +18,10 @@ const VaccineAppointmentCertification = () => {
   const registerAndBookAppointmentHandler = (
     e?: React.MouseEvent<HTMLInputElement>
   ) => {
+    ReactGA.event({
+      category: "Modal-Load",
+      action: "registerAndBookAppointment"
+    });
     isLoading.current = true;
     setModalFooterButtons([
       <ButtonComponent label="Close" clickEvent={() => modalClosehandler()} />,
@@ -29,6 +34,10 @@ const VaccineAppointmentCertification = () => {
   };
 
   const downloadCertificate = (e?: React.MouseEvent<HTMLInputElement>) => {
+    ReactGA.event({
+      category: "Modal-Load",
+      action: "downloadCertificate"
+    });
     isLoading.current = true;
     setisOpen(!isOpen);
     setModalFooterButtons([]);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, lazy, useContext } from "react";
+import ReactGA from "react-ga";
 import styles from "./styles.module.less";
 import ButtonComponent from "../../generic/Button";
 import { useHistory } from "react-router-dom";
@@ -19,12 +20,16 @@ import TotalRecordsBarComponent from "../../components/TotalRecordsBar";
 import ExpandCollapseBarComponent from "../../components/ExpandCollapseBar";
 import LoadMoreComponent from "../../components/LoadMore";
 import ScopedNotificationComponent from "../../generic/ScopedNotification";
-import { useFetchDistrictJson, usePageLoadAction } from "../../utils/CustomHooks";
+import {
+  useFetchDistrictJson,
+  usePageLoadAction,
+} from "../../utils/CustomHooks";
 import { useToasts } from "react-toast-notifications";
 import VaccinationCenterComponent from "../../components/VaccinationCenter";
 import FilterComponent from "../Filter";
 import { VaccinationFilterContext } from "../../context/VaccinationFilter";
 import NavigateComponent from "../../components/Navigation";
+import WithPageViewTracking from "../../HOC/PageViewTracking";
 
 type StateObject = {
   label: string;
@@ -79,7 +84,14 @@ const CalendarByDistrictComponent = (props: any) => {
     );
   }, [vaccinationFilterState]);
 
-  const searchRecords = (selectedValue?: DistrictObject) => {
+  const searchRecords = (selectedValue: DistrictObject | any) => {
+    ReactGA.event({
+      category: "Data-Load",
+      action: "CalendarByDistrict-SearchRecords",
+      label: "district-".concat(selectedValue.label),
+      value: selectedValue.value,
+    });
+
     setIsLoading(true);
     SearchAPI.searchRecordsCalendarByDistrict(
       `district_id=${selectedValue?.value}&date=${getTodayDateFormatted()}`
@@ -104,6 +116,10 @@ const CalendarByDistrictComponent = (props: any) => {
         setLimit(_centers.length > 0 ? 10 : 0);
       })
       .catch((err) => {
+        ReactGA.exception({
+          description: "An error ocurred - CalendarByDistrict-SearchRecords",
+          fatal: true,
+        });
         setIsLoading(false);
         addToast(AppConstant.GENERIC_ERROR, {
           appearance: "error",
@@ -329,4 +345,4 @@ const CalendarByDistrictComponent = (props: any) => {
   );
 };
 
-export default CalendarByDistrictComponent;
+export default WithPageViewTracking(CalendarByDistrictComponent);

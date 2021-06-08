@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, lazy, useContext } from "react";
+import ReactGA from "react-ga";
 import Input from "@salesforce/design-system-react/components/input";
 import styles from "./styles.module.less";
 import ButtonComponent from "../../generic/Button";
@@ -22,6 +23,7 @@ import FilterComponent from "../Filter";
 import { VaccinationFilterContext } from "../../context/VaccinationFilter";
 import NavigateComponent from "../../components/Navigation";
 import { usePageLoadAction } from "../../utils/CustomHooks";
+import WithPageViewTracking from "../../HOC/PageViewTracking";
 
 const CalendarByPinComponent = (props: any) => {
   const filterContext = useContext(VaccinationFilterContext);
@@ -64,6 +66,12 @@ const CalendarByPinComponent = (props: any) => {
   };
 
   const searchRecords = (evt: any, pCode: string = "") => {
+    ReactGA.event({
+      category: "Data-Load",
+      action: "CalendarByPin-SearchRecords",
+      label: "pincode",
+      value: parseInt(pCode),
+    });
     setIsExpandAll(false);
     if (
       (evt["type"] === "keyup" && evt.keyCode !== 13) ||
@@ -98,6 +106,10 @@ const CalendarByPinComponent = (props: any) => {
         setLimit(_centers.length > 0 ? 10 : 0);
       })
       .catch((err) => {
+        ReactGA.exception({
+          description: 'An error ocurred - CalendarByPin-SearchRecords',
+          fatal: true
+        });
         setIsLoading(false);
         addToast(AppConstant.GENERIC_ERROR, {
           appearance: "error",
@@ -288,4 +300,4 @@ const CalendarByPinComponent = (props: any) => {
   );
 };
 
-export default CalendarByPinComponent;
+export default WithPageViewTracking(CalendarByPinComponent);

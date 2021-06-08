@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, lazy, useContext } from "react";
+import ReactGA from "react-ga";
 import styles from "./styles.module.less";
 import ButtonComponent from "../../generic/Button";
 import { useHistory } from "react-router-dom";
@@ -28,6 +29,7 @@ import FilterComponent from "../Filter";
 import { VaccinationFilterContext } from "../../context/VaccinationFilter";
 import BaseNotificationComponent from "../../generic/BaseNotification";
 import NavigateComponent from "../../components/Navigation";
+import WithPageViewTracking from "../../HOC/PageViewTracking";
 
 type StateObject = {
   label: string;
@@ -81,7 +83,13 @@ const SearchByDistrictComponent = (props: any) => {
     );
   }, [vaccinationFilterState]);
 
-  const searchRecords = (selectedValue?: DistrictObject) => {
+  const searchRecords = (selectedValue: DistrictObject | any) => {
+    ReactGA.event({
+      category: "Data-Load",
+      action: "SearchByDistrict-SearchRecords",
+      label: "district-".concat(selectedValue.label),
+      value: selectedValue.value,
+    });
     setIsLoading(true);
     SearchAPI.searchRecordsByDistrict(
       `district_id=${selectedValue?.value}&date=${getTodayDateFormatted()}`
@@ -103,6 +111,10 @@ const SearchByDistrictComponent = (props: any) => {
         setLimit(_sessions.length > 0 ? 10 : 0);
       })
       .catch((err) => {
+        ReactGA.exception({
+          description: 'An error ocurred - SearchByDistrict-SearchRecords',
+          fatal: true
+        });
         setIsLoading(false);
         addToast(AppConstant.GENERIC_ERROR, {
           appearance: "error",
@@ -315,4 +327,4 @@ const SearchByDistrictComponent = (props: any) => {
   );
 };
 
-export default SearchByDistrictComponent;
+export default WithPageViewTracking(SearchByDistrictComponent);
