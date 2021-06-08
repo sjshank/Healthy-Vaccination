@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, lazy, useContext } from "react";
+import ReactGA from "react-ga";
 import styles from "./styles.module.less";
 import ButtonComponent from "../../generic/Button";
 import { useHistory } from "react-router-dom";
@@ -25,6 +26,7 @@ import VaccinationCenterComponent from "../../components/VaccinationCenter";
 import FilterComponent from "../Filter";
 import { VaccinationFilterContext } from "../../context/VaccinationFilter";
 import NavigateComponent from "../../components/Navigation";
+import WithPageViewTracking from "../../HOC/PageViewTracking";
 
 type StateObject = {
   label: string;
@@ -79,7 +81,14 @@ const CalendarByDistrictComponent = (props: any) => {
     );
   }, [vaccinationFilterState]);
 
-  const searchRecords = (selectedValue?: DistrictObject) => {
+  const searchRecords = (selectedValue: DistrictObject | any) => {
+    ReactGA.event({
+      category: "Data-Load",
+      action: "CalendarByDistrict-SearchRecords",
+      label: "district-".concat(selectedValue.label),
+      value: selectedValue.value,
+    });
+
     setIsLoading(true);
     SearchAPI.searchRecordsCalendarByDistrict(
       `district_id=${selectedValue?.value}&date=${getTodayDateFormatted()}`
@@ -104,6 +113,10 @@ const CalendarByDistrictComponent = (props: any) => {
         setLimit(_centers.length > 0 ? 10 : 0);
       })
       .catch((err) => {
+        ReactGA.event({
+          category: "Error",
+          action: "CalendarByDistrict-SearchRecords",
+        });
         setIsLoading(false);
         addToast(AppConstant.GENERIC_ERROR, {
           appearance: "error",
@@ -329,4 +342,4 @@ const CalendarByDistrictComponent = (props: any) => {
   );
 };
 
-export default CalendarByDistrictComponent;
+export default WithPageViewTracking(CalendarByDistrictComponent);

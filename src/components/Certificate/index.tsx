@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import ReactGA from "react-ga";
 import UserAuthenticateComponent from "../../components/UserAuthenticate";
 import OTPConfirmComponent from "../../components/OTPConfirm";
 import { AuthAPI } from "../../services/authAPI";
@@ -26,6 +27,11 @@ const CertificateComponent = ({ closeAction }: CertificateProps) => {
     mNumber: number = 1111111111,
     e?: React.MouseEvent<HTMLInputElement>
   ) => {
+    ReactGA.event({
+      category: "Data-Load",
+      action: "generateOTP",
+      label: "mobileNumberEntered",
+    });
     isLoading.current = true;
     mobileNumber.current = mNumber.toString();
     AuthAPI.retrieveOTP({ mobile: mobileNumber.current })
@@ -57,6 +63,11 @@ const CertificateComponent = ({ closeAction }: CertificateProps) => {
     otpNumber: number = 1234,
     e?: React.MouseEvent<HTMLInputElement>
   ) => {
+    ReactGA.event({
+      category: "Data-Load",
+      action: "confirmOTP",
+      label: "otpEntered",
+    });
     isLoading.current = true;
     AuthAPI.verifyOTP({
       otp: sha256(otpNumber.toString()),
@@ -88,8 +99,12 @@ const CertificateComponent = ({ closeAction }: CertificateProps) => {
     refId: string,
     e?: React.MouseEvent<HTMLInputElement>
   ) => {
+    ReactGA.event({
+      category: "Data-Load",
+      action: "downloadCertificat",
+      label: "certificateDownloaded",
+    });
     isLoading.current = true;
-    console.log(refId);
     CertificateAPI.retrieveCertificate(`beneficiary_reference_id=${refId}`, {
       token: sessionStorage.getItem("userToken"),
     })

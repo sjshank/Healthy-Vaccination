@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import ReactGA from 'react-ga';
 import { BrowserRouter } from "react-router-dom";
 import { IconContext } from "react-icons";
 import * as AppConstant from "./constants/appConstant";
@@ -13,6 +14,9 @@ import IconSettings from "@salesforce/design-system-react/components/icon-settin
 import Settings from "@salesforce/design-system-react/components/settings";
 import { ToastProvider } from "react-toast-notifications";
 Settings.setAppElement("#app");
+
+
+ReactGA.initialize('UA-199034948-1');
 
 ReactDOM.render(
   <IconSettings

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import ReactGA from "react-ga";
 import CardComponent from "../../components/Card";
 import VaccinationByAgeComponent from "../../components/VaccinationByAge";
 import VaccinationByCategoryComponent from "../../components/VaccinationByCategory";
@@ -18,6 +19,7 @@ import VaccinationAvailabilityComponent from "../../components/VaccinationAvaila
 import VaccineAppointmentCertification from "../VaccineAppointmentCertification";
 import styles from "./styles.module.less";
 import { useToasts } from "react-toast-notifications";
+import WithPageViewTracking from "../../HOC/PageViewTracking";
 
 const DashBoardComponent = () => {
   const isLoading = useRef(true);
@@ -38,6 +40,10 @@ const DashBoardComponent = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    ReactGA.event({
+      category: "Data-Load",
+      action: "getDashboardData",
+    });
     DashboardAPI.getDashBoardData()
       .then((data) => {
         isLoading.current = false;
@@ -73,6 +79,10 @@ const DashBoardComponent = () => {
         });
       })
       .catch((err) => {
+        ReactGA.event({
+          category: "Error",
+          action: "getDashboardData",
+        });
         isLoading.current = false;
         addToast(AppConstant.GENERIC_ERROR, {
           appearance: "error",
@@ -181,4 +191,4 @@ const DashBoardComponent = () => {
   );
 };
 
-export default DashBoardComponent;
+export default WithPageViewTracking(DashBoardComponent);

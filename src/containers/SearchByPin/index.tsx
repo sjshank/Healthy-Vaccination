@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, lazy, useContext } from "react";
+import ReactGA from "react-ga";
 import Input from "@salesforce/design-system-react/components/input";
 import styles from "./styles.module.less";
 import ButtonComponent from "../../generic/Button";
@@ -22,6 +23,7 @@ import { VaccinationFilterContext } from "../../context/VaccinationFilter";
 import BadgeComponent from "../../generic/Badge";
 import NavigateComponent from "../../components/Navigation";
 import { usePageLoadAction } from "../../utils/CustomHooks";
+import WithPageViewTracking from "../../HOC/PageViewTracking";
 
 const SearchByPinComponent = (props: any) => {
   const filterContext = useContext(VaccinationFilterContext);
@@ -72,6 +74,12 @@ const SearchByPinComponent = (props: any) => {
   };
 
   const searchRecords = (evt: any, pCode: string = "") => {
+    ReactGA.event({
+      category: "Data-Load",
+      action: "SearchByPin-SearchRecords",
+      label: "pincode",
+      value: parseInt(pCode),
+    });
     if (
       (evt["type"] === "keyup" && evt.keyCode !== 13) ||
       !pCode ||
@@ -103,6 +111,10 @@ const SearchByPinComponent = (props: any) => {
         setLimit(_sessions.length > 0 ? 10 : 0);
       })
       .catch((err) => {
+        ReactGA.event({
+          category: "Error",
+          action: "SearchByPin-SearchRecords",
+        });
         setIsLoading(false);
         addToast(AppConstant.GENERIC_ERROR, {
           appearance: "error",
@@ -271,4 +283,4 @@ const SearchByPinComponent = (props: any) => {
   );
 };
 
-export default SearchByPinComponent;
+export default WithPageViewTracking(SearchByPinComponent);

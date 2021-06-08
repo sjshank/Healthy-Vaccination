@@ -4,6 +4,7 @@ import HeaderComponent from "./components/Header";
 import React from "react";
 import Routes from "./config/app.route";
 import ScrollUpButton from "react-scroll-up-button";
+import WithPageViewTracking from "./HOC/PageViewTracking";
 
 const App = () => {
   return (
@@ -24,4 +25,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default WithPageViewTracking(App);
