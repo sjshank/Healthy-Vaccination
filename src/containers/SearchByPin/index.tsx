@@ -111,9 +111,9 @@ const SearchByPinComponent = (props: any) => {
         setLimit(_sessions.length > 0 ? 10 : 0);
       })
       .catch((err) => {
-        ReactGA.event({
-          category: "Error",
-          action: "SearchByPin-SearchRecords",
+        ReactGA.exception({
+          description: 'An error ocurred - SearchByPin-SearchRecords',
+          fatal: true
         });
         setIsLoading(false);
         addToast(AppConstant.GENERIC_ERROR, {

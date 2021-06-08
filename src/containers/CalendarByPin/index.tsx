@@ -106,9 +106,9 @@ const CalendarByPinComponent = (props: any) => {
         setLimit(_centers.length > 0 ? 10 : 0);
       })
       .catch((err) => {
-        ReactGA.event({
-          category: "Error",
-          action: "CalendarByPin-SearchRecords",
+        ReactGA.exception({
+          description: 'An error ocurred - CalendarByPin-SearchRecords',
+          fatal: true
         });
         setIsLoading(false);
         addToast(AppConstant.GENERIC_ERROR, {

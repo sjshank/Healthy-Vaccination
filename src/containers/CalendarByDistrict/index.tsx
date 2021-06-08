@@ -20,7 +20,10 @@ import TotalRecordsBarComponent from "../../components/TotalRecordsBar";
 import ExpandCollapseBarComponent from "../../components/ExpandCollapseBar";
 import LoadMoreComponent from "../../components/LoadMore";
 import ScopedNotificationComponent from "../../generic/ScopedNotification";
-import { useFetchDistrictJson, usePageLoadAction } from "../../utils/CustomHooks";
+import {
+  useFetchDistrictJson,
+  usePageLoadAction,
+} from "../../utils/CustomHooks";
 import { useToasts } from "react-toast-notifications";
 import VaccinationCenterComponent from "../../components/VaccinationCenter";
 import FilterComponent from "../Filter";
@@ -113,9 +116,9 @@ const CalendarByDistrictComponent = (props: any) => {
         setLimit(_centers.length > 0 ? 10 : 0);
       })
       .catch((err) => {
-        ReactGA.event({
-          category: "Error",
-          action: "CalendarByDistrict-SearchRecords",
+        ReactGA.exception({
+          description: "An error ocurred - CalendarByDistrict-SearchRecords",
+          fatal: true,
         });
         setIsLoading(false);
         addToast(AppConstant.GENERIC_ERROR, {

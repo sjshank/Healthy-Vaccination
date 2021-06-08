@@ -111,9 +111,9 @@ const SearchByDistrictComponent = (props: any) => {
         setLimit(_sessions.length > 0 ? 10 : 0);
       })
       .catch((err) => {
-        ReactGA.event({
-          category: "Error",
-          action: "SearchByDistrict-SearchRecords",
+        ReactGA.exception({
+          description: 'An error ocurred - SearchByDistrict-SearchRecords',
+          fatal: true
         });
         setIsLoading(false);
         addToast(AppConstant.GENERIC_ERROR, {
