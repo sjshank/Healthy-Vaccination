@@ -15,7 +15,7 @@ const HeaderComponent = (props: any) => {
             <div className="slds-media__figure">
               <img
                 className={styles.statelogo}
-                src="https://ndhm.gov.in/assets/images/healthministry.svg"
+                src="https://ndhm.gov.in/assets/images/healthministry.svg?SameSite=None"
                 onClick={clickHandler}
               ></img>
             </div>
@@ -36,12 +36,10 @@ const HeaderComponent = (props: any) => {
                   </h1>
                 </div>
               </div>
-              <p
-                className="slds-page-header__name-meta"
-                onClick={clickHandler}
-                style={{ cursor: "pointer" }}
-              >
-                India Vaccination Statistics
+              <p className="slds-page-header__name-meta">
+                <span onClick={clickHandler} style={{ cursor: "pointer" }}>
+                  India Vaccination Statistics
+                </span>
               </p>
             </div>
           </div>

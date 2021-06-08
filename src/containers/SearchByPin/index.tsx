@@ -19,6 +19,9 @@ import { useToasts } from "react-toast-notifications";
 import VaccinationSessionComponent from "../../components/VaccinationSession";
 import FilterComponent from "../Filter";
 import { VaccinationFilterContext } from "../../context/VaccinationFilter";
+import BadgeComponent from "../../generic/Badge";
+import NavigateComponent from "../../components/Navigation";
+import { usePageLoadAction } from "../../utils/CustomHooks";
 
 const SearchByPinComponent = (props: any) => {
   const filterContext = useContext(VaccinationFilterContext);
@@ -33,10 +36,7 @@ const SearchByPinComponent = (props: any) => {
     ISessionType[]
   >([]);
   const history = useHistory();
-  useEffect(() => {
-    disableFlagRef.current = true;
-    document.getElementById("pincodeInput")?.focus();
-  }, []);
+  usePageLoadAction(disableFlagRef, resetFilter, "pincodeInput");
 
   useEffect(() => {
     setVaccinationSessions(
@@ -128,6 +128,7 @@ const SearchByPinComponent = (props: any) => {
             title="Filter by Vaccine"
             type="vaccine"
             badgeList={AppConstant.VACCINE_LIST_BADGE}
+            customClass="slds-float_right"
           />
         </div>
         <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_5-of-12">
@@ -135,6 +136,7 @@ const SearchByPinComponent = (props: any) => {
             title="Filter by Age"
             type="age"
             badgeList={AppConstant.AGE_LIST_BADGE}
+            customClass="slds-float_left"
           />
         </div>
       </>
@@ -168,7 +170,7 @@ const SearchByPinComponent = (props: any) => {
       return (
         <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12">
           <div className="slds-text-align_center">
-            <ButtonComponent label="Back" clickEvent={handleBackAction}  />
+            {/* <ButtonComponent label="Home" clickEvent={handleBackAction} /> */}
             <LoadMoreComponent
               records={filteredVaccinationSessions}
               limit={limit}
@@ -188,6 +190,20 @@ const SearchByPinComponent = (props: any) => {
         className="slds-grid slds-wrap slds-m-around_large"
         style={{ justifyContent: "center" }}
       >
+        <div className="slds-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12 slds-clearfix slds-p-bottom_xx-small">
+          <NavigateComponent
+            label="Back"
+            variant="link"
+            customClass="slds-float_left"
+            url=""
+          />
+          <NavigateComponent
+            label="Search By District"
+            variant="link"
+            customClass="slds-float_right"
+            url="searchByDistrict"
+          />
+        </div>
         <div className="slds-size_12-of-12 slds-medium-size_5-of-12 slds-large-size_5-of-12">
           <div className="slds-form-element__control">
             <Input
@@ -207,7 +223,7 @@ const SearchByPinComponent = (props: any) => {
             />
           </div>
           <div className="slds-text-align_center slds-m-top_small">
-            <ButtonComponent label="Back" clickEvent={handleBackAction}  />
+            <ButtonComponent label="Home" clickEvent={handleBackAction} />
             <ButtonComponent label="Reset" clickEvent={resetAction} />
             <ButtonComponent
               buttonId="searchByPinBtn"
