@@ -25,7 +25,7 @@ The project has been built with a following learning objectives :
 4. https://cdn-api.co-vin.in/api/v2/registration/certificate/public/
 
 ## How to run application in local ?
-* git clone https://github.com/sjshank/Healthy-Vaccination.git
+* git clone https://github.com/sjshank/IN-Vaccination.git
 * npm install
 * npm start
 * http://localhost:4000/
